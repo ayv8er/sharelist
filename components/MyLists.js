@@ -1,43 +1,32 @@
 import ListItems from "./ListItems";
-import { useUserContext } from "../store/user-context";
-import { Container, Accordion } from "react-bootstrap";
 
-const fakeData = [
-  {
-    userId: "did:eth0xyoonji9088",
-    listId: "01",
-    listName: "walmart",
-    listItems: ["blueberry", "steak", "bread", "eggs"],
-  },
-  {
-    userId: "did:eth0xyoonji19088",
-    listId: "02",
-    listName: "target",
-    listItems: ["ryans clothes", "gyoza", "paw patrol"],
-  },
-];
+import { useListContext } from "../store/list-context";
+import { useUserContext } from "../store/user-context";
+
+import { Container, Accordion, Spinner } from "react-bootstrap";
 
 const MyLists = () => {
   const { userMetadata } = useUserContext();
+  const [list] = useListContext();
 
   if (!userMetadata) {
-    return <div className="mt-5 text-white min-vh-90">Loading My Lists...</div>;
+    return (
+      <div className="pt-5 mt-5 text-white min-vh-90">
+        <Spinner animation="grow" />
+      </div>
+    );
   }
 
   return (
     <Container fluid className="mt-4">
       <p className="text-center mb-1">My Lists</p>
       <Accordion>
-        {fakeData.map((list) => {
+        {list.map((list) => {
           return (
-            <Accordion.Item
-              className=""
-              eventKey={list.listId}
-              key={list.listId}
-            >
-              <Accordion.Header>{list.listName}</Accordion.Header>
+            <Accordion.Item eventKey={list.id} key={list.id}>
+              <Accordion.Header>{list.list_name}</Accordion.Header>
               <Accordion.Body>
-                <ListItems list={list.listItems} />
+                <ListItems listId={list.id} listItems={list.list_items} />
               </Accordion.Body>
             </Accordion.Item>
           );
@@ -46,15 +35,5 @@ const MyLists = () => {
     </Container>
   );
 };
-
-export async function getStaticProps() {
-  const res = await fetch("/api/lists");
-
-  return {
-    props: {
-      lists,
-    },
-  };
-}
 
 export default MyLists;

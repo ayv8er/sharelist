@@ -4,7 +4,7 @@ import { useUserContext } from "../store/user-context";
 import { Nav, Navbar, Container } from "react-bootstrap";
 
 const NavBar = () => {
-  const { setUserMetadata } = useUserContext();
+  const { userMetadata, setUserMetadata } = useUserContext();
   const magic = useMagicContext();
 
   const logoutHandler = () => {
@@ -20,7 +20,9 @@ const NavBar = () => {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="/dashboard">My Lists</Nav.Link>
+            <Nav.Link disabled href="/">
+              My Lists
+            </Nav.Link>
             <Nav.Link disabled href="/404">
               Invited Lists
             </Nav.Link>

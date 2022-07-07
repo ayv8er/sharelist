@@ -50,7 +50,7 @@ const MagicLoginModal = () => {
       if (didToken) {
         magic.user.getMetadata().then((userData) => {
           setUserMetadata(userData);
-          router.push("/dashboard");
+          router.push(`/${userData.phoneNumber}`);
         });
       } else {
         setLoginError(true);
