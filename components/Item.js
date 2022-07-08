@@ -1,23 +1,28 @@
 import { useState } from "react";
 
+// todo Object method is throwing TypeError "cannot convert undefined or null to object"
+
 const Items = ({ item, deleteListItem, listId }) => {
   const [selected, setSelected] = useState(false);
 
-  const handleSelected = () => {
+  const selectedHandler = () => {
     setSelected(!selected);
   };
 
-  const handleDelete = () => {
+  const deleteItemHandler = () => {
     deleteListItem(...Object.keys(item), listId);
   };
 
   return (
     <div className="d-flex justify-content-between text-white border rounded p-2">
-      <div>
-        <span className="px-2 mx-1 border rounded">{`$${Object.values(
+      <div className="d-flex justify-content-between">
+        <span className="d-flex align-items-center px-2 mx-1">{`$${Object.values(
           item
         )}`}</span>
-        <span onClick={handleDelete} className="px-1 mx-2 border rounded">
+        <span
+          onClick={deleteItemHandler}
+          className="d-flex align-items-center px-1 mx-2"
+        >
           &#9447;
         </span>
       </div>
@@ -26,8 +31,10 @@ const Items = ({ item, deleteListItem, listId }) => {
           selected ? "px-3 text-decoration-line-through fw-light" : "px-3"
         }
       >{`${Object.keys(item)}`}</span>
-
-      <span onClick={handleSelected} className="px-2 border rounded">
+      <span
+        onClick={selectedHandler}
+        className="d-flex align-items-center px-2"
+      >
         &#8854;
       </span>
     </div>

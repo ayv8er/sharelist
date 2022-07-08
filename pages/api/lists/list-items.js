@@ -21,6 +21,24 @@ export default async function updateList(req, res) {
       }
     );
     client.close();
-    res.json(202);
+    res.json(result);
+  }
+  if (req.method === "DELETE") {
+    const { id, newList } = req.body;
+    const client = await MongoClient.connect(
+      `mongodb+srv://richardoh86:${process.env.NEXT_MONGODB_PASSWORD}@cluster0.0odgf.mongodb.net/sharelist?retryWrites=true&w=majority`
+    );
+    const db = client.db("sharelist");
+    const usersList = db.collection("list");
+    const result = await usersList.updateOne(
+      { _id: ObjectID(id) },
+      {
+        $set: {
+          list_items: [...newList],
+        },
+      }
+    );
+    client.close();
+    res.json(result);
   }
 }

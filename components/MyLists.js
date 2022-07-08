@@ -1,4 +1,5 @@
 import ListItems from "./ListItems";
+import AddList from "./AddList";
 
 import { useListContext } from "../store/list-context";
 import { useUserContext } from "../store/user-context";
@@ -21,12 +22,17 @@ const MyLists = () => {
     <Container fluid className="mt-4">
       <p className="text-center mb-1">My Lists</p>
       <Accordion>
-        {list.map((list) => {
+        <AddList />
+        {list.map((l) => {
           return (
-            <Accordion.Item eventKey={list.id} key={list.id}>
-              <Accordion.Header>{list.list_name}</Accordion.Header>
+            <Accordion.Item eventKey={l.id} key={l.id}>
+              <Accordion.Header>{l.list_name}</Accordion.Header>
               <Accordion.Body>
-                <ListItems listId={list.id} listItems={list.list_items} />
+                <ListItems
+                  listId={l.id}
+                  listItems={l.list_items}
+                  creatorId={l.creator_id}
+                />
               </Accordion.Body>
             </Accordion.Item>
           );

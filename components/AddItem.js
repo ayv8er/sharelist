@@ -3,7 +3,7 @@ const AddItem = (props) => {
 
   const priceChangeHandler = (e) => {
     const numPrice = Number(e.target.value);
-    setPrice(e.target.value);
+    setPrice(numPrice);
   };
 
   const nameChangeHandler = (e) => {
@@ -30,10 +30,7 @@ const AddItem = (props) => {
         onChange={nameChangeHandler}
         placeholder="name"
       />
-      <span
-        onClick={addItemHandler}
-        className="d-flex align-items-center px-2 border rounded"
-      >
+      <span onClick={addItemHandler} className="d-flex align-items-center px-2">
         &#8853;
       </span>
     </div>

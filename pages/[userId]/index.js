@@ -11,7 +11,7 @@ const Dashboard = ({ totalList }) => {
 
   useEffect(() => {
     setList(totalList);
-  }, [list, totalList]);
+  }, [totalList]);
 
   return (
     <>
