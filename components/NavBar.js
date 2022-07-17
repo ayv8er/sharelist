@@ -1,10 +1,9 @@
 import { useMagicContext } from "../store/magic-context";
-import { useUserContext } from "../store/user-context";
-
+import { useAuthContext } from "../store/auth-context";
 import { Nav, Navbar, Container } from "react-bootstrap";
 
 const NavBar = () => {
-  const { userMetadata, setUserMetadata } = useUserContext();
+  const { userMetadata, setUserMetadata } = useAuthContext();
   const magic = useMagicContext();
 
   const logoutHandler = () => {
@@ -20,10 +19,8 @@ const NavBar = () => {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link disabled href="/">
-              My Lists
-            </Nav.Link>
-            <Nav.Link disabled href="/404">
+            <Nav.Link href={`/${userMetadata.phoneNumber}`}>My Lists</Nav.Link>
+            <Nav.Link href={`/shared/${userMetadata.phoneNumber}`}>
               Invited Lists
             </Nav.Link>
             <Nav.Link onClick={logoutHandler}>Log Out</Nav.Link>

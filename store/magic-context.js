@@ -5,6 +5,7 @@ const MagicContext = createContext(null);
 
 export function useMagicContext() {
   const context = useContext(MagicContext);
+
   if (context === undefined) {
     throw new Error("useMagicContext was used outside of its Provider");
   }
@@ -20,11 +21,13 @@ export function MagicContextProvider({ children }) {
         const makeMagic = await new Magic(
           process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY
         );
+        makeMagic.preload;
         setMagic(makeMagic);
       }
     }
     initMagic();
-  }, [magic]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <MagicContext.Provider value={magic}>{children}</MagicContext.Provider>

@@ -1,18 +1,16 @@
 import { useState } from "react";
 import axios from "axios";
-
 import DeleteList from "./DeleteList";
 import AddItem from "./AddItem";
 import Item from "./Item";
-
-import { useUserContext } from "../store/user-context";
+import { useAuthContext } from "../store/auth-context";
 import { useListContext } from "../store/list-context";
 
 const ListItems = ({ listItems, listId, creatorId }) => {
   const [price, setPrice] = useState("");
   const [name, setName] = useState("");
   const [list, setList] = useListContext();
-  const { userMetadata } = useUserContext();
+  const { userMetadata } = useAuthContext();
 
   const deleteListItem = async (objKey, id) => {
     const newList = listItems.filter((item) => {

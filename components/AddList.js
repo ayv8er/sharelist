@@ -1,15 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
-
-import { useUserContext } from "../store/user-context";
+import { useAuthContext } from "../store/auth-context";
 import { useListContext } from "../store/list-context";
-
 import { Accordion } from "react-bootstrap";
 
 const AddList = () => {
   const [listName, setListName] = useState("");
   const [, setList] = useListContext();
-  const { userMetadata } = useUserContext();
+  const { userMetadata } = useAuthContext();
 
   const listNameChangeHandler = (e) => {
     setListName(e.target.value);

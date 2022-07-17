@@ -1,7 +1,5 @@
 import { useState } from "react";
 
-// todo Object method is throwing TypeError "cannot convert undefined or null to object"
-
 const Items = ({ item, deleteListItem, listId }) => {
   const [selected, setSelected] = useState(false);
 

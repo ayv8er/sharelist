@@ -1,7 +1,5 @@
 import axios from "axios";
-
 import { useListContext } from "../store/list-context";
-
 import { Button } from "react-bootstrap";
 
 const DeleteList = ({ listId }) => {

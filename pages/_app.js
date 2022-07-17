@@ -1,19 +1,17 @@
 import Layout from "../components/Layout";
-
-import { UserContextProvider } from "../store/user-context";
+import { AuthContextProvider } from "../store/auth-context";
 import { MagicContextProvider } from "../store/magic-context";
-
 import "../styles/globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function MyApp({ Component, pageProps }) {
   return (
     <MagicContextProvider>
-      <UserContextProvider>
+      <AuthContextProvider>
         <Layout>
           <Component {...pageProps} />
         </Layout>
-      </UserContextProvider>
+      </AuthContextProvider>
     </MagicContextProvider>
   );
 }

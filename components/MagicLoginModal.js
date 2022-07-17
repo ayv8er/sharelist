@@ -1,9 +1,6 @@
 import { useState } from "react";
-import { useRouter } from "next/router";
-
 import { useMagicContext } from "../store/magic-context";
-import { useUserContext } from "../store/user-context";
-
+import { useAuthContext } from "../store/auth-context";
 import { Button } from "react-bootstrap";
 
 const MagicLoginModal = () => {
@@ -12,9 +9,8 @@ const MagicLoginModal = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [inputOneError, setInputOneError] = useState(false);
   const [inputCharError, setInputCharError] = useState(false);
-  const { setUserMetadata } = useUserContext();
+  const { setUserMetadata } = useAuthContext();
   const magic = useMagicContext();
-  const router = useRouter();
 
   const phoneNumberChangeHandler = (e) => {
     e.preventDefault();
@@ -50,7 +46,6 @@ const MagicLoginModal = () => {
       if (didToken) {
         magic.user.getMetadata().then((userData) => {
           setUserMetadata(userData);
-          router.push(`/${userData.phoneNumber}`);
         });
       } else {
         setLoginError(true);

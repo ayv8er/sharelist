@@ -1,13 +1,13 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useMagicContext } from "./magic-context";
 
-const UserContext = createContext(null);
+const AuthContext = createContext(null);
 
-export function useUserContext() {
-  return useContext(UserContext);
+export function useAuthContext() {
+  return useContext(AuthContext);
 }
 
-export function UserContextProvider({ children }) {
+export function AuthContextProvider({ children }) {
   const [userMetadata, setUserMetadata] = useState(null);
   const magic = useMagicContext();
 
@@ -24,17 +24,19 @@ export function UserContextProvider({ children }) {
         } catch (err) {
           console.log(err);
         }
-      } else {
-        setUserMetadata(null);
       }
     }
     fetchUser();
   }, [magic]);
 
-  const values = {
-    userMetadata,
-    setUserMetadata,
-  };
-
-  return <UserContext.Provider value={values}>{children}</UserContext.Provider>;
+  return (
+    <AuthContext.Provider
+      value={{
+        userMetadata,
+        setUserMetadata,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 }

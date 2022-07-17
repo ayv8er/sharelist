@@ -1,17 +1,32 @@
 import { useState, useEffect } from "react";
-
+import { useRouter } from "next/router";
 import NavBar from "../../components/NavBar";
 import MyLists from "../../components/MyLists";
-
+import { useAuthContext } from "../../store/auth-context";
 import { ListContext } from "../../store/list-context";
 import { getAllMyLists } from "../api/lists/my-lists";
+import { Spinner } from "react-bootstrap";
 
 const Dashboard = ({ totalList }) => {
   const [list, setList] = useState([]);
+  const { userMetadata } = useAuthContext();
+  const router = useRouter();
 
   useEffect(() => {
+    if (!userMetadata) {
+      router.push("/");
+    }
     setList(totalList);
-  }, [totalList]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userMetadata, totalList]);
+
+  if (!userMetadata) {
+    return (
+      <div className="d-flex justify-content-center align-items-center text-white min-vh-100">
+        <Spinner animation="border" />
+      </div>
+    );
+  }
 
   return (
     <>

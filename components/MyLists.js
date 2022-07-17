@@ -1,22 +1,10 @@
 import ListItems from "./ListItems";
 import AddList from "./AddList";
-
 import { useListContext } from "../store/list-context";
-import { useUserContext } from "../store/user-context";
-
-import { Container, Accordion, Spinner } from "react-bootstrap";
+import { Container, Accordion } from "react-bootstrap";
 
 const MyLists = () => {
-  const { userMetadata } = useUserContext();
   const [list] = useListContext();
-
-  if (!userMetadata) {
-    return (
-      <div className="pt-5 mt-5 text-white min-vh-90">
-        <Spinner animation="grow" />
-      </div>
-    );
-  }
 
   return (
     <Container fluid className="mt-4">
