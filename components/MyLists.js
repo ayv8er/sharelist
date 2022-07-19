@@ -7,7 +7,7 @@ const MyLists = () => {
   const [list] = useListContext();
 
   return (
-    <Container fluid className="mt-4">
+    <Container className="mt-4">
       <p className="text-center mb-1">My Lists</p>
       <Accordion>
         <AddList />
