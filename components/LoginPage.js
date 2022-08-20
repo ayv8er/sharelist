@@ -204,10 +204,9 @@ const LoginPage = () => {
               value={username}
             />
           </div>
-
           <div className="my-3">
             <input
-              type="text"
+              type="password"
               className="form-control"
               placeholder="Password"
               onChange={passwordChangeHandler}
@@ -215,11 +214,10 @@ const LoginPage = () => {
               value={password}
             />
           </div>
-
           <div className="my-3">
             {loginState.isSignUp && (
               <input
-                type="text"
+                type="password"
                 className="form-control"
                 placeholder="Re-enter Password"
                 onChange={rePasswordChangeHandler}
