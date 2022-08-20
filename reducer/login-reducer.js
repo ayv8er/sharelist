@@ -1,7 +1,7 @@
 export const ACTIONS = {
   SET_IS_LOGGING_IN: "SET_IS_LOGGING_IN",
   LOGIN_OR_SIGNUP: "LOGIN_OR_SIGNUP",
-  SET_USERNAME_LENGTH_ERROR: "SET_USERNAME_LENGTH_ERROR",
+  SET_USERNAME_ERROR: "SET_USERNAME_ERROR",
   SET_PASSWORD_ERROR: "SET_PASSWORD_ERROR",
   SET_REPASSWORD_ERROR: "SET_REPASSWORD_ERROR",
   SET_BLANK_ERROR: "SET_BLANK_ERROR",
@@ -24,7 +24,7 @@ export const loginReducer = (loginState, action) => {
         isSubmitBlank: false,
         isSignUp: action.payload,
       };
-    case ACTIONS.SET_USERNAME_LENGTH_ERROR:
+    case ACTIONS.SET_USERNAME_ERROR:
       return {
         ...loginState,
         isUsernameShort: action.payload,

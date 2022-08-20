@@ -1,4 +1,5 @@
 import { useReducer, useState } from "react";
+import axios from "axios";
 import { loginReducer, ACTIONS } from "../reducer/login-reducer";
 import { Button } from "react-bootstrap";
 
@@ -18,22 +19,22 @@ const LoginPage = () => {
 
   const nameChangeHandler = (e) => {
     if (loginState.isSignUp) {
-      if (e.target.value === "" || e.target.value.length > 2) {
+      if (e.target.value === "" || e.target.value.trim().length > 2) {
         dispatch({
-          type: ACTIONS.SET_USERNAME_LENGTH_ERROR,
+          type: ACTIONS.SET_USERNAME_ERROR,
           payload: false,
         });
         setUsername(e.target.value);
-      } else if (e.target.value.length < 3) {
+      } else if (e.target.value.trim().length < 3) {
         dispatch({
-          type: ACTIONS.SET_USERNAME_LENGTH_ERROR,
+          type: ACTIONS.SET_USERNAME_ERROR,
           payload: true,
         });
         setUsername(e.target.value);
       }
     } else {
       dispatch({
-        type: ACTIONS.SET_USERNAME_LENGTH_ERROR,
+        type: ACTIONS.SET_USERNAME_ERROR,
         payload: false,
       });
       setUsername(e.target.value);
@@ -42,7 +43,7 @@ const LoginPage = () => {
 
   const passwordChangeHandler = (e) => {
     if (loginState.isSignUp) {
-      if (e.target.value === "" || e.target.value.length > 7) {
+      if (e.target.value === "" || e.target.value.trim().length > 7) {
         if (e.target.value === rePassword) {
           dispatch({
             type: ACTIONS.SET_PASSWORD_ERROR,
@@ -100,53 +101,68 @@ const LoginPage = () => {
     }
   };
 
-  const signUpHandler = async (e) => {
-    e.preventDefault();
-    dispatch({ type: ACTIONS.SET_IS_LOGGING_IN, payload: true });
-    if (
-      !username ||
-      username.trim() === "" ||
-      !password ||
-      password.trim() === "" ||
-      !rePassword ||
-      rePassword.trim() === ""
-    ) {
-      dispatch({ type: ACTIONS.SET_BLANK_ERROR, payload: true });
-      setUsername("");
-      setPassword("");
-      setRePassword("");
-      return;
-    }
-    try {
-      console.log("sign up login in here");
-    } catch (err) {
-      dispatch({ type: ACTIONS.SET_LOGIN_ERROR, payload: err });
-    }
+  const createUser = async (username, password) => {
+    const response = axios.post("/api/auth/signup", {
+      username: username,
+      password: password,
+    });
+    return response;
   };
 
-  const loginHandler = async (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     dispatch({ type: ACTIONS.SET_IS_LOGGING_IN, payload: true });
-    if (
-      !username ||
-      username.trim() === "" ||
-      !password ||
-      password.trim() === ""
-    ) {
-      dispatch({ type: ACTIONS.SET_BLANK_ERROR, payload: true });
-      setUsername("");
-      setPassword("");
-      return;
-    }
-    try {
-      console.log("login logic in here");
-    } catch (err) {
-      dispatch({ type: ACTIONS.SET_LOGIN_ERROR, payload: err });
+    if (loginState.isSignUp) {
+      if (
+        !username ||
+        username.trim() === "" ||
+        !password ||
+        password.trim() === "" ||
+        !rePassword ||
+        rePassword.trim() === ""
+      ) {
+        dispatch({ type: ACTIONS.SET_BLANK_ERROR, payload: true });
+        setUsername("");
+        setPassword("");
+        setRePassword("");
+        return;
+      } else {
+        try {
+          const result = await createUser(username, password);
+          console.log(result);
+          // add result handling
+        } catch (err) {
+          console.log(err);
+          // add error handling
+        } finally {
+          setUsername("");
+          setPassword("");
+          setRePassword("");
+          dispatch({ type: ACTIONS.SET_IS_LOGGING_IN, payload: false });
+        }
+      }
+    } else {
+      // login
+      if (
+        !username ||
+        username.trim() === "" ||
+        !password ||
+        password.trim() === ""
+      ) {
+        dispatch({ type: ACTIONS.SET_BLANK_ERROR, payload: true });
+        setUsername("");
+        setPassword("");
+        return;
+      } else {
+        // loginUser(username, password)
+        try {
+        } catch (err) {}
+      }
     }
   };
 
   return (
-    <form>
+    <form onSubmit={submitHandler}>
       <div className="mb-4">
         {loginState.isSignUp &&
           !loginState.loginErrorMessage &&
@@ -231,7 +247,7 @@ const LoginPage = () => {
       <div className="d-grid">
         <Button
           className="text-white"
-          onClick={loginState.isSignUp ? signUpHandler : loginHandler}
+          onClick={submitHandler}
           variant="outline-secondary"
           type="submit"
           disabled={
