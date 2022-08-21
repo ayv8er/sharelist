@@ -1,4 +1,5 @@
 import { useReducer, useState } from "react";
+import { signIn } from "next-auth/react";
 import axios from "axios";
 import { loginReducer, ACTIONS } from "../reducer/login-reducer";
 import { Button } from "react-bootstrap";
@@ -142,7 +143,6 @@ const LoginPage = () => {
         }
       }
     } else {
-      // login
       if (
         !username ||
         username.trim() === "" ||
@@ -154,9 +154,28 @@ const LoginPage = () => {
         setPassword("");
         return;
       } else {
-        // loginUser(username, password)
         try {
-        } catch (err) {}
+          const result = await signIn("credentials", {
+            redirect: false,
+            username: username,
+            password: password,
+            redirect: false,
+          });
+          if (response.ok) {
+            // set auth to state
+            //redirect user because he's authenticated
+          } else {
+            // set state to context api
+          }
+        } catch (err) {
+          console.log(err);
+          // add error handling
+        } finally {
+          setUsername("");
+          setPassword("");
+          setRePassword("");
+          dispatch({ type: ACTIONS.SET_IS_LOGGING_IN, payload: false });
+        }
       }
     }
   };
