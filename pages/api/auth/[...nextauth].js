@@ -7,17 +7,24 @@ export const authOptions = {
   session: {
     jwt: true,
   },
+  secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: "/",
   },
+  callbacks: {
+    async jwt({ token, user, account, profile, isNewUser }) {
+      return token;
+    },
+  },
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: "credentials",
       async authorize(credentials, req) {
+        console.log(req);
         const client = await connectToDatabase();
         const db = client.db("sharelist");
-        const usersList = db.collection("users");
-        const user = await usersList.findOne({
+        const users = db.collection("user");
+        let user = await users.findOne({
           username: credentials.username,
         });
         if (!user) {
@@ -32,9 +39,13 @@ export const authOptions = {
           client.close();
           throw new error("Invalid credentials");
         }
+        user = {
+          ...user,
+          name: user.username,
+        };
         client.close();
         return {
-          req,
+          name: user.username,
         };
       },
     }),

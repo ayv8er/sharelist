@@ -1,7 +1,7 @@
 import { SessionProvider } from "next-auth/react";
 import Layout from "../components/Layout";
-import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/globals.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (

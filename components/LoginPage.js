@@ -1,4 +1,5 @@
 import { useReducer, useState } from "react";
+import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
 import axios from "axios";
 import { loginReducer, ACTIONS } from "../reducer/login-reducer";
@@ -17,6 +18,7 @@ const LoginPage = () => {
     isLoggingIn: false,
     isSignUp: false,
   });
+  const router = useRouter();
 
   const nameChangeHandler = (e) => {
     if (loginState.isSignUp) {
@@ -103,7 +105,7 @@ const LoginPage = () => {
   };
 
   const createUser = async (username, password) => {
-    const response = axios.post("/api/auth/signup", {
+    const response = axios.post("/api/auth/users/signup", {
       username: username,
       password: password,
     });
@@ -130,8 +132,18 @@ const LoginPage = () => {
       } else {
         try {
           const result = await createUser(username, password);
-          console.log(result);
-          // add result handling
+          if (result.status === 201) {
+            const result = await signIn("credentials", {
+              redirect: false,
+              username: username,
+              password: password,
+            });
+            if (!result.error) {
+              router.replace("/dashboard");
+            } else {
+              // handle error
+            }
+          }
         } catch (err) {
           console.log(err);
           // add error handling
@@ -159,13 +171,13 @@ const LoginPage = () => {
             redirect: false,
             username: username,
             password: password,
-            redirect: false,
           });
-          if (response.ok) {
-            // set auth to state
-            //redirect user because he's authenticated
+          console.log(result);
+          if (!result.error) {
+            router.replace("/dashboard");
           } else {
-            // set state to context api
+            // handle error
+            // loginState.loginErrorMessage
           }
         } catch (err) {
           console.log(err);
