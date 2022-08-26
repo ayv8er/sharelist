@@ -1,10 +1,10 @@
 import { useState } from "react";
-import NavBar from "../../components/NavBar";
-import Lists from "../../components/BothLists/Lists";
-import { unstable_getServerSession } from "next-auth/next";
-import { getAllMyLists } from "../api/auth/lists/get-lists";
-import { authOptions } from "../../pages/api/auth/[...nextauth]";
-import { ListContext } from "../../store/list-context";
+import NavBar from "../components/NavBar";
+import Lists from "../components/BothLists/Lists";
+import { unstable_getServerSession } from "next-auth";
+import { getAllMyLists } from "./api/auth/lists/get-lists";
+import { authOptions } from "./api/auth/[...nextauth]";
+import { ListContext } from "../store/list-context";
 
 const Dashboard = (props) => {
   const [sharedLists, setSharedLists] = useState(props.sharedLists);

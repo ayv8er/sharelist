@@ -14,7 +14,7 @@ const signUpHandler = async (req, res) => {
     password.trim() === "" ||
     password.trim().length < 8
   ) {
-    res.status(422).json({ message: "Incomplete Credentials" });
+    res.status(422).json({ message: "Credentials are unacceptable" });
     return;
   }
   const client = await connectToDatabase();

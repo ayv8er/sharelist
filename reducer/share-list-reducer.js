@@ -16,6 +16,7 @@ export const shareListReducer = (sharingState, action) => {
     case ACTIONS.SET_USERNAME_ERROR:
       return {
         ...sharingState,
+        sharingErrorMessage: null,
         isUsernameShort: action.payload,
         isSubmitBlank: false,
       };

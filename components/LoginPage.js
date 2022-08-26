@@ -131,27 +131,21 @@ const LoginPage = () => {
         return;
       } else {
         try {
-          const result = await createUser(username, password);
-          if (result.status === 201) {
-            const result = await signIn("credentials", {
-              redirect: false,
-              username: username,
-              password: password,
-            });
-            if (!result.error) {
-              router.replace("/dashboard");
-            } else {
-              // handle error
-            }
-          }
+          await createUser(username, password);
+          await signIn("credentials", {
+            redirect: false,
+            username: username,
+            password: password,
+          });
+          router.replace("/dashboard");
         } catch (err) {
-          console.log(err);
-          // add error handling
-        } finally {
+          dispatch({
+            type: ACTIONS.SET_LOGIN_ERROR_MESSAGE,
+            payload: err.response.data.message,
+          });
           setUsername("");
           setPassword("");
           setRePassword("");
-          dispatch({ type: ACTIONS.SET_IS_LOGGING_IN, payload: false });
         }
       }
     } else {
@@ -161,7 +155,10 @@ const LoginPage = () => {
         !password ||
         password.trim() === ""
       ) {
-        dispatch({ type: ACTIONS.SET_BLANK_ERROR, payload: true });
+        dispatch({
+          type: ACTIONS.SET_BLANK_ERROR,
+          payload: true,
+        });
         setUsername("");
         setPassword("");
         return;
@@ -172,21 +169,21 @@ const LoginPage = () => {
             username: username,
             password: password,
           });
-          console.log(result);
           if (!result.error) {
             router.replace("/dashboard");
           } else {
-            // handle error
-            // loginState.loginErrorMessage
+            dispatch({
+              type: ACTIONS.SET_LOGIN_ERROR_MESSAGE,
+              payload: "Invalid credentials",
+            });
+            setUsername("");
+            setPassword("");
           }
         } catch (err) {
           console.log(err);
-          // add error handling
-        } finally {
+          alert(err);
           setUsername("");
           setPassword("");
-          setRePassword("");
-          dispatch({ type: ACTIONS.SET_IS_LOGGING_IN, payload: false });
         }
       }
     }

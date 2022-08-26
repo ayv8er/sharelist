@@ -5,6 +5,7 @@ export const ACTIONS = {
   SET_PASSWORD_ERROR: "SET_PASSWORD_ERROR",
   SET_REPASSWORD_ERROR: "SET_REPASSWORD_ERROR",
   SET_BLANK_ERROR: "SET_BLANK_ERROR",
+  SET_LOGIN_ERROR_MESSAGE: "SET_LOGIN_ERROR_MESSAGE",
 };
 
 export const loginReducer = (loginState, action) => {
@@ -27,12 +28,14 @@ export const loginReducer = (loginState, action) => {
     case ACTIONS.SET_USERNAME_ERROR:
       return {
         ...loginState,
+        loginErrorMessage: null,
         isUsernameShort: action.payload,
         isSubmitBlank: false,
       };
     case ACTIONS.SET_PASSWORD_ERROR:
       return {
         ...loginState,
+        loginErrorMessage: null,
         isSubmitBlank: false,
         isPasswordShort: action.payload.isPasswordShort,
         isPasswordMatch: action.payload.isPasswordMatch,
@@ -40,13 +43,21 @@ export const loginReducer = (loginState, action) => {
     case ACTIONS.SET_REPASSWORD_ERROR:
       return {
         ...loginState,
+        loginErrorMessage: null,
         isSubmitBlank: false,
         isPasswordMatch: action.payload,
       };
     case ACTIONS.SET_BLANK_ERROR:
       return {
         ...loginState,
+        loginErrorMessage: null,
         isSubmitBlank: action.payload,
+        isLoggingIn: false,
+      };
+    case ACTIONS.SET_LOGIN_ERROR_MESSAGE:
+      return {
+        ...loginState,
+        loginErrorMessage: action.payload,
         isLoggingIn: false,
       };
     default:

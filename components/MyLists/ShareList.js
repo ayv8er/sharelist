@@ -48,8 +48,14 @@ const ShareModal = (props) => {
         username: username,
       })
       .then((res) => {
-        console.log(res);
-        if (res.status === 200) {
+        if (res.data.status === 404) {
+          dispatch({
+            type: ACTIONS.SET_SHARING_ERROR_MESSAGE,
+            payload: res.data.message,
+          });
+          setUsername("");
+          return;
+        } else {
           const updatedList = myLists.map((list) => {
             if (list.id === id) {
               list.shared_id.push(username);
@@ -57,22 +63,13 @@ const ShareModal = (props) => {
             return list;
           });
           setMyLists([...updatedList]);
-        } else if (res.data.status === 404) {
-          dispatch({
-            type: ACTIONS.SET_SHARING_ERROR_MESSAGE,
-            payload: res.data.message,
-          });
-          return;
+          props.setisattemptshare(false);
         }
       })
       .catch((err) => {
-        console.log("gg");
+        console.log(err);
+        alert(err);
       });
-    dispatch({
-      type: ACTIONS.SET_IS_SHARING,
-      payload: false,
-    });
-    props.setisattemptshare(false);
   };
 
   const listName = (id) => {
